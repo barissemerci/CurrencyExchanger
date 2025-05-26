@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.ui.theme
+package com.barissemerci.currencyexchanger.core.presentation.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
