@@ -15,11 +15,10 @@ import com.barissemerci.currencyexchanger.exchanger.data.networking.mappers.toEx
 class RemoteExchangeRatesDataSource(
     private val httpClient: HttpClient
 ) : ExchangeRatesDataSource {
-    val baseUrl = BuildConfig.BASE_URL
+    private val baseUrl = BuildConfig.BASE_URL
 
     override suspend fun getExchangeRates(): Result<ExchangeRates, NetworkError> {
 
-        println("baseUrl : $baseUrl")
         return safeCall<ExchangeRatesDto> {
             httpClient.get(
                 urlString = baseUrl
