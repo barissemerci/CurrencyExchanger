@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.math.RoundingMode
 
 class ExchangerViewModel(
@@ -76,15 +77,18 @@ class ExchangerViewModel(
             }
 
             is ExchangerAction.OnChangeSellAmount -> {
-                val parsed = action.amount.toBigDecimal()
+                val parsed = action.amount.toBigDecimalOrNull()
 
-                _state.update {
-                    it.copy(
-                        sellAmountText = action.amount,
-                        sellAmountValue = parsed
-                    )
+                if (parsed != null || action.amount.isBlank()) {
+                    _state.update {
+                        it.copy(
+                            sellAmountText = action.amount,
+                            sellAmountValue = parsed ?: BigDecimal.ZERO
+                        )
+                    }
+                    updateBuyAmount()
                 }
-                updateBuyAmount()
+
             }
 
 
@@ -120,7 +124,6 @@ class ExchangerViewModel(
     }
 
     private fun observeRemainingConversions() {
-
         viewModelScope.launch {
             exchangeCountDataSource.remainingFreeConversions.collect { count ->
                 _state.update {
