@@ -6,9 +6,12 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.barissemerci.currencyexchanger.core.data.networking.HttpClientFactory
 import com.barissemerci.currencyexchanger.exchanger.data.local.DataStoreExchangeCountDataSource
+import com.barissemerci.currencyexchanger.exchanger.data.local.RoomAvailableBalanceDataSource
 import com.barissemerci.currencyexchanger.exchanger.data.networking.RemoteExchangeRatesDataSource
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeCountDataSource
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.AvailableBalanceDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
 import com.barissemerci.currencyexchanger.exchanger.presentation.ExchangerViewModel
 import io.ktor.client.engine.cio.CIO
 import org.koin.android.ext.koin.androidContext
@@ -29,18 +32,16 @@ val exchangerModule = module {
 
     viewModelOf(::ExchangerViewModel)
 
-
-
-        single<DataStore<Preferences>> {
-            androidContext().dataStore
-        }
-
-
-
-
-    singleOf(::DataStoreExchangeCountDataSource).bind<ExchangeCountDataSource>()
-
+    single<DataStore<Preferences>> {
+        androidContext().dataStore
     }
+    singleOf(::DataStoreExchangeCountDataSource).bind<ExchangeCountDataSource>()
+    singleOf(::RoomAvailableBalanceDataSource).bind<AvailableBalanceDataSource>()
+
+    singleOf(::ConvertCurrencyUseCase)
+
+
+}
 
 
 
