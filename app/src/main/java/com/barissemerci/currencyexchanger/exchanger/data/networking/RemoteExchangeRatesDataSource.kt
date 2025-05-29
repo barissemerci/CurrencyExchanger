@@ -5,8 +5,8 @@ import com.barissemerci.currencyexchanger.core.domain.util.NetworkError
 import com.barissemerci.currencyexchanger.core.domain.util.Result
 import com.barissemerci.currencyexchanger.core.domain.util.map
 import com.barissemerci.currencyexchanger.exchanger.data.networking.dto.ExchangeRatesDto
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeRates
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRates
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import com.barissemerci.currencyexchanger.BuildConfig

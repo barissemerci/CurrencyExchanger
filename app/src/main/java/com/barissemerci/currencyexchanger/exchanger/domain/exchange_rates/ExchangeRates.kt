@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.domain
+package com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates
 
 import java.math.BigDecimal
 

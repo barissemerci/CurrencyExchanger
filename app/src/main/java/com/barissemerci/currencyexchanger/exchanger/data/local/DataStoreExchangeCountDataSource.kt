@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.barissemerci.currencyexchanger.core.data.local.PreferenceKeys
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeCountDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
