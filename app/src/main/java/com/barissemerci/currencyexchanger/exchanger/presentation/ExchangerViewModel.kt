@@ -23,9 +23,12 @@ class ExchangerViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow(ExchangerState())
 
+
     val state = _state
         .onStart {
             viewModelScope.launch {
+                observeRemainingConversions()
+
                 while (isActive) {
                     exchangeRatesDataSource.getExchangeRates().onSuccess { exchangeRates ->
                         _state.update {
@@ -103,7 +106,10 @@ class ExchangerViewModel(
 
 
             ExchangerAction.OnSubmit -> {
-                exchangeCountDataSource.decrementFreeConversion()
+                viewModelScope.launch {
+                    exchangeCountDataSource.decrementFreeConversion()
+
+                }
                 _state.update { it.copy(showTransactionInfo = true) }
             }
 
@@ -117,6 +123,17 @@ class ExchangerViewModel(
                 _state.update { it.copy(showBuyCurrencyList = false) }
             }
 
+        }
+    }
+
+    private fun observeRemainingConversions() {
+
+        viewModelScope.launch {
+            exchangeCountDataSource.remainingFreeConversions.collect { count ->
+                _state.update {
+                    it.copy(remainingFreeConversions = count)
+                }
+            }
         }
     }
 

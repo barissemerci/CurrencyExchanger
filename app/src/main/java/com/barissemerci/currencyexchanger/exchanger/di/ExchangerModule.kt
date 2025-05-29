@@ -1,14 +1,24 @@
 package com.barissemerci.currencyexchanger.exchanger.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.barissemerci.currencyexchanger.core.data.networking.HttpClientFactory
+import com.barissemerci.currencyexchanger.exchanger.data.local.DataStoreExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.data.networking.RemoteExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeRatesDataSource
 import com.barissemerci.currencyexchanger.exchanger.presentation.ExchangerViewModel
 import io.ktor.client.engine.cio.CIO
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_prefs")
 
 val exchangerModule = module {
 
@@ -18,4 +28,20 @@ val exchangerModule = module {
     singleOf(::RemoteExchangeRatesDataSource).bind<ExchangeRatesDataSource>()
 
     viewModelOf(::ExchangerViewModel)
-}
+
+
+
+        single<DataStore<Preferences>> {
+            androidContext().dataStore
+        }
+
+
+
+
+    singleOf(::DataStoreExchangeCountDataSource).bind<ExchangeCountDataSource>()
+
+    }
+
+
+
+
