@@ -70,31 +70,58 @@ private fun ExchangerScreen(
             }
             Text("Exchange Rates")
 
-           CurrencyExchangeRow(
-                icon = {
-                   Icon(
-                       imageVector = Icons.Default.KeyboardArrowDown,
-                       contentDescription = null
-                   )
-               },
-               title = "USD",
-               amount = "100",
-               currency = "EUR",
 
-           )
+            CurrencyExchangeRow(
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = null
+                    )
+                },
+                onChangeAmount = { amount ->
+                    onAction(
+                        ExchangerAction.OnChangeSellAmount(amount)
+                    )
+                },
+                title = "Sell",
+                amount = state.sellAmountText,
+                isExpanded = state.showSellCurrencyList,
+
+                selectedCurrency = state.selectedSellCurrency,
+                currencyList = state.exchangeCurrencyList,
+
+            )
+
             HorizontalDivider()
 
-           CurrencyExchangeRow(
+            CurrencyExchangeRow(
                 icon = {
-                   Icon(
-                       imageVector = Icons.Default.KeyboardArrowUp,
-                       contentDescription = null
-                   )
-               },
-               title = "EUR",
-               amount = "100",
-               currency = "USD",
-           )
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = null
+                    )
+                },
+
+                currencyList = state.exchangeCurrencyList,
+                onClickCurrency = {
+                    onAction(
+                        ExchangerAction.OnChangeBuyCurrency(it)
+                    )
+                },
+                showDropDown = {
+                    onAction(
+                        ExchangerAction.OnClickChangeBuyCurrency
+                    )
+                },
+                dismissDropDown = {
+                    onAction(
+                        ExchangerAction.OnDismissBuyCurrencyList
+                    )
+                },
+                title = "Receive",
+                amount = state.buyAmount,
+                selectedCurrency = state.selectedBuyCurrency
+            )
             Spacer(Modifier.weight(1f))
             PrimaryButton(
                 text = "SUBMIT",
@@ -114,7 +141,9 @@ private fun ExchangerScreen(
 private fun ExchangerScreenPreview() {
     CurrencyExchangerTheme {
         ExchangerScreen(
-            state = ExchangerState(),
+            state = ExchangerState(
+
+            ),
             onAction = {}
         )
     }

@@ -7,7 +7,7 @@ fun ExchangeRatesDto.toExchangeRates(): ExchangeRates {
     return ExchangeRates(
         base = base,
         date = date,
-        rates = rates
+        rates = this.rates.mapValues { (_, value) -> value.toBigDecimal() }
     )
 }
 

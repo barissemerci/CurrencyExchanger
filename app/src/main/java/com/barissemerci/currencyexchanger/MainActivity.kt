@@ -16,11 +16,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             CurrencyExchangerTheme {
                 val viewModel = koinViewModel<ExchangerViewModel>()
-
-
                 ExchangerScreenRoot(
-
-                   )
+                    viewModel = viewModel
+                )
 
             }
         }

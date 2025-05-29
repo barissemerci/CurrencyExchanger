@@ -2,16 +2,50 @@ package com.barissemerci.currencyexchanger.exchanger.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.barissemerci.currencyexchanger.core.domain.util.onError
+import com.barissemerci.currencyexchanger.core.domain.util.onSuccess
+import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeCountDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.presentation.mappers.toSelectableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import java.math.RoundingMode
 
-class ExchangerViewModel : ViewModel() {
+class ExchangerViewModel(
+    exchangeRatesDataSource: ExchangeRatesDataSource,
+    val exchangeCountDataSource: ExchangeCountDataSource
+) : ViewModel() {
     private val _state = MutableStateFlow(ExchangerState())
+
     val state = _state
-        .onStart {}
+        .onStart {
+            viewModelScope.launch {
+                while (isActive) {
+                    exchangeRatesDataSource.getExchangeRates().onSuccess { exchangeRates ->
+                        _state.update {
+                            it.copy(exchangeRates = exchangeRates)
+                        }
+                        if (exchangeRates != null) {
+                            _state.update {
+                                it.copy(
+                                    exchangeCurrencyList = exchangeRates.rates.toSelectableList()
+                                )
+                            }
+                        }
+
+                    }.onError { }
+                    updateBuyAmount()
+                    delay(5000)
+                }
+
+            }
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
@@ -21,22 +55,87 @@ class ExchangerViewModel : ViewModel() {
     fun onAction(action: ExchangerAction) {
         when (action) {
             is ExchangerAction.OnChangeBuyCurrency -> {
-                _state.update { it.copy(selectedBuyCurrency = action.currency) }
+                _state.update {
+                    it.copy(
+                        exchangeCurrencyList =
+                            it.exchangeCurrencyList.mapIndexed { index, item ->
+                                if (index == action.currencyIndex) item.copy(isSelected = true) else item.copy(
+                                    isSelected = false
+                                )
+                            },
+                        selectedBuyCurrency = it.exchangeCurrencyList[action.currencyIndex].currency,
+                        showSellCurrencyList = false
+
+                    )
+                }
+                /*      _state.update {
+                          it.copy(
+                              buyAmount = (it.buyAmount * (it.exchangeRates?.rates?.getOrDefault(
+                                  it.selectedBuyCurrency,
+                                  0.0
+                              ) ?: 0.0))
+                          )
+                      }*/
             }
 
             is ExchangerAction.OnChangeSellAmount -> {
-                _state.update { it.copy(sellAmount = action.amount) }
+                val parsed = action.amount.toBigDecimalOrNull()
+                if (parsed != null || action.amount.isEmpty()) {
+                    _state.update {
+                        it.copy(
+                            sellAmountText = action.amount,
+                            sellAmountValue = parsed
+                        )
+                    }
+                    updateBuyAmount()
+                }
+
+
+                /*   _state.update {
+                       it.copy(
+                           buyAmount = (action.amount * (it.exchangeRates?.rates?.getOrDefault(
+                               it.selectedBuyCurrency,
+                               0.0
+                           ) ?: 0.0))
+                       )
+                   }*/
             }
 
-            is ExchangerAction.OnChangeSellCurrency -> {
-                _state.update { it.copy(selectedSellCurrency = action.currency) }
-
-            }
 
             ExchangerAction.OnSubmit -> {
-
+                exchangeCountDataSource.decrementFreeConversion()
                 _state.update { it.copy(showTransactionInfo = true) }
             }
+
+            ExchangerAction.OnClickChangeBuyCurrency -> {
+                _state.update { it.copy(showBuyCurrencyList = true) }
+
+            }
+
+
+            ExchangerAction.OnDismissBuyCurrencyList -> {
+                _state.update { it.copy(showBuyCurrencyList = false) }
+            }
+
+        }
+    }
+
+    private fun updateBuyAmount() {
+        val state = _state.value
+        val rates = state.exchangeRates ?: return
+        val amount = state.sellAmountValue ?: return
+
+        val fromRate = rates.rates[state.selectedSellCurrency]
+        println("Converted fromRate: $fromRate")
+        val toRate = rates.rates[state.selectedBuyCurrency]
+        println("Converted toRate: $toRate")
+
+        if (fromRate != null && toRate != null) {
+            val rate = toRate.divide(fromRate, 6, RoundingMode.HALF_EVEN)
+            val converted = amount.multiply(rate)
+            val formatted = converted.setScale(2, RoundingMode.HALF_EVEN).toPlainString()
+            println("Converted amount: $formatted")
+            _state.update { it.copy(buyAmount = formatted) }
         }
     }
 }
