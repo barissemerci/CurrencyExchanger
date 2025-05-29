@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.barissemerci.currencyexchanger.core.domain.util.onError
 import com.barissemerci.currencyexchanger.core.domain.util.onSuccess
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeCountDataSource
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
 import com.barissemerci.currencyexchanger.exchanger.presentation.mappers.toSelectableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,8 @@ import java.math.RoundingMode
 
 class ExchangerViewModel(
     exchangeRatesDataSource: ExchangeRatesDataSource,
-    val exchangeCountDataSource: ExchangeCountDataSource
+    private val convertCurrencyUseCase: ConvertCurrencyUseCase,
+    private val exchangeCountDataSource: ExchangeCountDataSource
 ) : ViewModel() {
     private val _state = MutableStateFlow(ExchangerState())
 
@@ -71,43 +73,34 @@ class ExchangerViewModel(
 
                     )
                 }
-                /*      _state.update {
-                          it.copy(
-                              buyAmount = (it.buyAmount * (it.exchangeRates?.rates?.getOrDefault(
-                                  it.selectedBuyCurrency,
-                                  0.0
-                              ) ?: 0.0))
-                          )
-                      }*/
             }
 
             is ExchangerAction.OnChangeSellAmount -> {
-                val parsed = action.amount.toBigDecimalOrNull()
-                if (parsed != null || action.amount.isEmpty()) {
-                    _state.update {
-                        it.copy(
-                            sellAmountText = action.amount,
-                            sellAmountValue = parsed
-                        )
-                    }
-                    updateBuyAmount()
+                val parsed = action.amount.toBigDecimal()
+
+                _state.update {
+                    it.copy(
+                        sellAmountText = action.amount,
+                        sellAmountValue = parsed
+                    )
                 }
-
-
-                /*   _state.update {
-                       it.copy(
-                           buyAmount = (action.amount * (it.exchangeRates?.rates?.getOrDefault(
-                               it.selectedBuyCurrency,
-                               0.0
-                           ) ?: 0.0))
-                       )
-                   }*/
+                updateBuyAmount()
             }
 
 
             ExchangerAction.OnSubmit -> {
                 viewModelScope.launch {
-                    exchangeCountDataSource.decrementFreeConversion()
+
+                    val exchangeRate =
+                        _state.value.exchangeRates?.rates?.get(_state.value.selectedBuyCurrency)
+                    if (exchangeRate != null) {
+                        convertCurrencyUseCase.invoke(
+                            exchangeRate = exchangeRate,
+                            fromCurrency = _state.value.selectedSellCurrency,
+                            toCurrency = _state.value.selectedBuyCurrency,
+                            amount = _state.value.sellAmountValue
+                        )
+                    }
 
                 }
                 _state.update { it.copy(showTransactionInfo = true) }
@@ -140,7 +133,7 @@ class ExchangerViewModel(
     private fun updateBuyAmount() {
         val state = _state.value
         val rates = state.exchangeRates ?: return
-        val amount = state.sellAmountValue ?: return
+        val amount = state.sellAmountValue
 
         val fromRate = rates.rates[state.selectedSellCurrency]
         println("Converted fromRate: $fromRate")

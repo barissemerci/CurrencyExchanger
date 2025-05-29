@@ -1,7 +1,7 @@
 package com.barissemerci.currencyexchanger.exchanger.presentation
 
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.dropdowns.Selectable
-import com.barissemerci.currencyexchanger.exchanger.domain.ExchangeRates
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRates
 import java.math.BigDecimal
 
 data class ExchangerState(
@@ -10,7 +10,7 @@ data class ExchangerState(
     val availableBalances: List<AvailableBalance> = emptyList(),
 
     val sellAmountText: String = "",
-    val sellAmountValue: BigDecimal? = null,
+    val sellAmountValue: BigDecimal = BigDecimal.ZERO,
 
     val buyAmount: String = "",
     val selectedBuyCurrency: String = "USD",
