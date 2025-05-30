@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.presentation.components
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
