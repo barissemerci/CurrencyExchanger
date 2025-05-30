@@ -1,17 +1,12 @@
 package com.barissemerci.currencyexchanger.core.presentation.designsystem.theme
 
-import androidx.compose.material3.ColorScheme
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-val Primary = Color(0xFF459BD8)
-val PrimaryGradientStart = Color(0xFF3B82C1)
-val PrimaryGradientEnd = Color(0xFF3B99D8)
 
-val SellRed = Color(0xFFDF5D58)
-val ReceiveGreen = Color(0xFF499D72)
-
-val ColorScheme.buttonGradient: Brush
-    get() = Brush.linearGradient(
-        colors = listOf(PrimaryGradientStart, PrimaryGradientEnd)
-    )
+val Black = Color(0xFF121212)
+val DarkGray = Color(0xFF1E1E1E)
+val Gray = Color(0xFF2A2A2A)
+val LightGray = Color(0xFF9CA3AF)
+val LighterGray = Color(0xFFD1D5DB)
+val White = Color(0xFFFFFFFF)
+val Green = Color(0xFF4CD964)
