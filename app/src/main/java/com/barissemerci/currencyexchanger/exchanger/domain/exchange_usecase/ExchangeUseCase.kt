@@ -4,7 +4,7 @@ import com.barissemerci.currencyexchanger.core.domain.util.ExchangeError
 import com.barissemerci.currencyexchanger.core.domain.util.Result
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.AvailableBalanceDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.first
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -24,10 +24,10 @@ class ConvertCurrencyUseCase(
         val commissionRate = BigDecimal("0.007")
 
         val fromBalance =
-            availableBalanceDataSource.getBalance(fromCurrency)?.amount ?: BigDecimal.ZERO
-        val toBalance = availableBalanceDataSource.getBalance(toCurrency)?.amount ?: BigDecimal.ZERO
+            availableBalanceDataSource.getBalance(fromCurrency)?.currencyAmount ?: BigDecimal.ZERO
+        val toBalance = availableBalanceDataSource.getBalance(toCurrency)?.currencyAmount ?: BigDecimal.ZERO
 
-        val remainingConversions = exchangeCountDataSource.remainingFreeConversions.last()
+        val remainingConversions = exchangeCountDataSource.remainingFreeConversions.first()
 
         val commission = if (remainingConversions > 0) {
             BigDecimal.ZERO

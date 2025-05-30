@@ -8,4 +8,10 @@ sealed interface ExchangerAction {
 
     data class OnChangeSellAmount(val amount: String) : ExchangerAction
     data class OnChangeBuyCurrency(val currencyIndex: Int) : ExchangerAction
+
+    data object OnDismissConversionResultDialog : ExchangerAction
+
+    //TODO DELETE THESE ACTIONS BEFORE PUSHING
+    data object Load1000EuroToWallet : ExchangerAction
+    data object IncreaseFreeExchangeCount : ExchangerAction
 }

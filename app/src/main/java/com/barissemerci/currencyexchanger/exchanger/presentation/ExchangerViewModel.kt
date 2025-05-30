@@ -4,14 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.barissemerci.currencyexchanger.core.domain.util.onError
 import com.barissemerci.currencyexchanger.core.domain.util.onSuccess
+import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.AvailableBalanceDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
 import com.barissemerci.currencyexchanger.exchanger.presentation.mappers.toSelectableList
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
@@ -22,15 +25,17 @@ import java.math.RoundingMode
 class ExchangerViewModel(
     exchangeRatesDataSource: ExchangeRatesDataSource,
     private val convertCurrencyUseCase: ConvertCurrencyUseCase,
-    private val exchangeCountDataSource: ExchangeCountDataSource
+    private val exchangeCountDataSource: ExchangeCountDataSource,
+    //TODO DELETE IT BEFORE PUSHING
+    private val availableBalanceDataSource: AvailableBalanceDataSource
+
 ) : ViewModel() {
     private val _state = MutableStateFlow(ExchangerState())
-
-
     val state = _state
         .onStart {
             viewModelScope.launch {
                 observeRemainingConversions()
+                observeAvailableBalances()
 
                 while (isActive) {
                     exchangeRatesDataSource.getExchangeRates().onSuccess { exchangeRates ->
@@ -44,7 +49,6 @@ class ExchangerViewModel(
                                 )
                             }
                         }
-
                     }.onError { }
                     updateBuyAmount()
                     delay(5000)
@@ -57,6 +61,11 @@ class ExchangerViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = ExchangerState()
         )
+
+
+
+    private val eventChannel = Channel<ExchangerEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     fun onAction(action: ExchangerAction) {
         when (action) {
@@ -103,11 +112,20 @@ class ExchangerViewModel(
                             fromCurrency = _state.value.selectedSellCurrency,
                             toCurrency = _state.value.selectedBuyCurrency,
                             amount = _state.value.sellAmountValue
-                        )
+                        ).onSuccess { conversionResult ->
+                            _state.update {
+                                it.copy(
+                                    showConversionResultDialog = true,
+                                    conversionResult = conversionResult
+                                )
+                            }
+                        }.onError {
+                            eventChannel.send(ExchangerEvent.ShowTransactionError("You don't have enough money"))
+                        }
                     }
 
                 }
-                _state.update { it.copy(showTransactionInfo = true) }
+                _state.update { it.copy(showConversionResultDialog = true) }
             }
 
             ExchangerAction.OnClickChangeBuyCurrency -> {
@@ -120,6 +138,22 @@ class ExchangerViewModel(
                 _state.update { it.copy(showBuyCurrencyList = false) }
             }
 
+            ExchangerAction.IncreaseFreeExchangeCount -> {
+                viewModelScope.launch {
+                    exchangeCountDataSource.incrementFreeConversion()
+
+                }
+            }
+
+            ExchangerAction.Load1000EuroToWallet -> {
+                viewModelScope.launch {
+                    availableBalanceDataSource.updateBalance("EUR", BigDecimal(1000))
+                }
+            }
+
+            ExchangerAction.OnDismissConversionResultDialog -> {
+                _state.update { it.copy(showConversionResultDialog = false) }
+            }
         }
     }
 
@@ -150,5 +184,19 @@ class ExchangerViewModel(
             println("Converted amount: $formatted")
             _state.update { it.copy(buyAmount = formatted) }
         }
+    }
+
+
+    private fun observeAvailableBalances() {
+    viewModelScope.launch {
+        availableBalanceDataSource.getAllBalances().collect{balances->
+            _state.update {
+                it.copy(availableBalances = balances)
+            }
+
+
+        }
+    }
+
     }
 }
