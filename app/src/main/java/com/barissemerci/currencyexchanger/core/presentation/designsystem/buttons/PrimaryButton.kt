@@ -1,45 +1,38 @@
 package com.barissemerci.currencyexchanger.core.presentation.designsystem.buttons
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
-import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.buttonGradient
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
 
 @Composable
 fun PrimaryButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
 ) {
     Button(
-        enabled = enabled,
-        onClick = onClick,
+        onClick = { onClick()},
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        modifier = modifier.background(
-            brush = if (enabled) {
-                MaterialTheme.colorScheme.buttonGradient
-            } else {
-                SolidColor(
-                    Color.Gray
-                )
-            },
-            shape = CircleShape,
+            containerColor = Green
         )
     ) {
         Text(
-            text = text
+            text = text,
+            style = MaterialTheme.typography.titleSmall,
+            color = Black
         )
     }
 }
