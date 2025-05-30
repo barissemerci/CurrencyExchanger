@@ -5,4 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface ExchangeCountDataSource {
    val remainingFreeConversions: Flow<Int>
    suspend fun decrementFreeConversion()
+
+   //TODO DELETE BEFORE PUSHING
+   suspend fun incrementFreeConversion()
 }

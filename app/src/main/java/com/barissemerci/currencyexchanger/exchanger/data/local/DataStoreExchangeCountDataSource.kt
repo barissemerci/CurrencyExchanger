@@ -26,5 +26,15 @@ class DataStoreExchangeCountDataSource(
         }
     }
 
+    override suspend fun incrementFreeConversion() {
+
+        dataStore.edit { prefs ->
+            val current = prefs[PreferenceKeys.FREE_CONVERSION_COUNT] ?: 5
+
+            prefs[PreferenceKeys.FREE_CONVERSION_COUNT] = current + 1
+
+        }
+    }
+
 
 }
