@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.presentation
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +36,7 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.buttons
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
 import com.barissemerci.currencyexchanger.core.presentation.util.ObserveAsEvents
 import com.barissemerci.currencyexchanger.exchanger.presentation.components.CurrencyExchangeRow
-import com.barissemerci.currencyexchanger.exchanger.presentation.utils.formatAmount
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

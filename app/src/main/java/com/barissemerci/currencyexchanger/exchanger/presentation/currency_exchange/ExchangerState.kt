@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.presentation
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange
 
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.dropdowns.Selectable
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.Balance

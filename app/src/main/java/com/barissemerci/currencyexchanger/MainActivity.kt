@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
-import com.barissemerci.currencyexchanger.exchanger.presentation.ExchangerScreenRoot
-import com.barissemerci.currencyexchanger.exchanger.presentation.ExchangerViewModel
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerScreenRoot
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerViewModel
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {

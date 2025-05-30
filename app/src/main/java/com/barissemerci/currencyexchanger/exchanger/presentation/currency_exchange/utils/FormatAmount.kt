@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.presentation.utils
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils
 
 import java.math.BigDecimal
 import java.math.RoundingMode

@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.presentation
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,7 @@ import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.Ava
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
-import com.barissemerci.currencyexchanger.exchanger.presentation.mappers.toSelectableList
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.mappers.toSelectableList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

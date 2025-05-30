@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.presentation.mappers
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.mappers
 
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.dropdowns.Selectable
 import java.math.BigDecimal

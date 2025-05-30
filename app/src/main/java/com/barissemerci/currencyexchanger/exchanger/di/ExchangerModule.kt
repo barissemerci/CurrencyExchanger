@@ -12,7 +12,7 @@ import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.Ava
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
-import com.barissemerci.currencyexchanger.exchanger.presentation.ExchangerViewModel
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerViewModel
 import io.ktor.client.engine.cio.CIO
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf

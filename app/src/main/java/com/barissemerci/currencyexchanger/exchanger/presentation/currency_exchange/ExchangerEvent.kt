@@ -1,4 +1,4 @@
-package com.barissemerci.currencyexchanger.exchanger.presentation
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange
 
 sealed interface ExchangerEvent {
     data object ShowTransactionInfo : ExchangerEvent
