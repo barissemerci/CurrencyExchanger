@@ -39,8 +39,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.barissemerci.currencyexchanger.R
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.dropdowns.Selectable
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
@@ -90,7 +92,7 @@ private fun CurrencySelectScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 })
@@ -151,14 +153,14 @@ private fun SearchBar(
             .background(Gray, RoundedCornerShape(8.dp)),
         placeholder = {
             Text(
-                text = "Search for a currency",
+                text = stringResource(R.string.search_for_a_currency),
                 color = LightGray
             )
         },
         leadingIcon = {
             Icon(
                 Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.search),
                 tint = LightGray
             )
         },
@@ -232,7 +234,7 @@ private fun SelectCurrencyItem(
             if (currency.isSelected) {
                 Icon(
                     imageVector = Icons.Default.CheckCircle,
-                    contentDescription = "Selected",
+                    contentDescription = stringResource(R.string.selected),
                     tint = Green,
                     modifier = Modifier.size(24.dp)
                 )

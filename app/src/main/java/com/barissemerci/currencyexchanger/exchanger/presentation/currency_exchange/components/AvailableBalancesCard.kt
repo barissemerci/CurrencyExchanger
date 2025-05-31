@@ -12,7 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.barissemerci.currencyexchanger.R
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.DarkGray
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.White
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.Balance
@@ -31,7 +33,7 @@ fun AvailableBalancesCard(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Available Balance",
+                text = stringResource(R.string.available_balance),
                 style = MaterialTheme.typography.bodyLarge,
                 color = White
             )
@@ -47,9 +49,6 @@ fun AvailableBalancesCard(
                     )
                 }
             }
-
-
         }
-
     }
 }

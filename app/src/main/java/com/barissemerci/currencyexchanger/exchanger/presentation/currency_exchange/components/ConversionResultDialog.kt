@@ -20,12 +20,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.barissemerci.currencyexchanger.R
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.DarkGray
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.LightGray
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.White
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import java.math.BigDecimal
 
@@ -52,7 +57,7 @@ fun ConversionResultDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Transaction Details",
+                    text = stringResource(R.string.exchange_details),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -61,7 +66,7 @@ fun ConversionResultDialog(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 DetailRow(
-                    label = "Converted Amount",
+                    label = stringResource(R.string.converted_amount),
                     value = "$sellAmount $fromCurrency",
                     isHighlighted = true
                 )
@@ -69,7 +74,7 @@ fun ConversionResultDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DetailRow(
-                    label = "Received Amount",
+                    label = stringResource(R.string.received_amount),
                     value = "$buyAmount $toCurrency",
                     isHighlighted = true
                 )
@@ -77,7 +82,7 @@ fun ConversionResultDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DetailRow(
-                    label = "Exchange Rate",
+                    label = stringResource(R.string.exchange_rate),
                     value = "1 %s = %s %s".format(
                         fromCurrency,
                         exchangeRate.formatAmount(4),
@@ -88,21 +93,21 @@ fun ConversionResultDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DetailRow(
-                    label = "Commission Fee",
+                    label = stringResource(R.string.commission_fee),
                     value = commissionFee.formatAmount() + " " + fromCurrency,
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 HorizontalDivider(
-                    color = Color(0xFF2A3F2E),
+                    color = LightGray,
                     thickness = 2.dp
                 )
 
                 Spacer(modifier = Modifier.height(9.dp))
 
                 DetailRow(
-                    label = "Total Deducted",
+                    label = stringResource(R.string.total_deducted),
                     value = "%.2f %s".format(totalDeducted, fromCurrency),
                     isHighlighted = true
                 )
@@ -116,14 +121,14 @@ fun ConversionResultDialog(
                     Button(
                         onClick = onDismiss,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF4CD964)
+                            containerColor = Green
                         ),
                         shape = RoundedCornerShape(8.dp),
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Text(
-                            text = "OK",
-                            color = Color(0xFF1E2F23),
+                            text = stringResource(R.string.ok),
+                            color = Black,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium
                         )

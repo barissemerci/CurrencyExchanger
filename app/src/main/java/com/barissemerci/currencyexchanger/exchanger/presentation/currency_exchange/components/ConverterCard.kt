@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barissemerci.currencyexchanger.R
@@ -111,7 +112,7 @@ fun ConverterCard(
                         )
                         Icon(
                             Icons.Filled.KeyboardArrowDown,
-                            contentDescription = "Sell Currency",
+                            contentDescription = stringResource(R.string.sell_currency),
                             tint = White
                         )
 
@@ -137,7 +138,7 @@ fun ConverterCard(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_swap_vert),
-                        contentDescription = "Switch Currency",
+                        contentDescription = stringResource(R.string.switch_currency),
                     )
                 }
             }

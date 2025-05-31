@@ -1,5 +1,6 @@
 package com.barissemerci.currencyexchanger.core.presentation.util
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -41,5 +42,13 @@ sealed interface UiText {
             is DynamicString -> value
             is StringResource -> stringResource(resId, *args)
         }
+    }
+
+    fun asString(context: Context): String {
+        return when (this) {
+            is DynamicString -> value
+            is StringResource -> context.getString(resId, *args)
+        }
+
     }
 }

@@ -22,9 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.barissemerci.currencyexchanger.R
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.buttons.PrimaryButton
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
 import com.barissemerci.currencyexchanger.core.presentation.util.ObserveAsEvents
@@ -47,12 +49,9 @@ fun ExchangerScreenRoot(
     ObserveAsEvents(flow = viewModel.events) { event ->
         when (event) {
             is ExchangerEvent.ShowTransactionError -> {
-                Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
             }
-
-            ExchangerEvent.ShowTransactionInfo -> {
-
-            }
+            else -> Unit
         }
     }
     ExchangerScreen(
@@ -84,7 +83,7 @@ private fun ExchangerScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Currency Exchanger") }
+                title = { Text(stringResource(R.string.currency_exchanger)) }
             )
         }
 
@@ -151,111 +150,12 @@ private fun ExchangerScreen(
 
             Spacer(modifier = Modifier.weight(1f))
             PrimaryButton(
-                text = "Submit",
+                text = stringResource(R.string.submit),
                 onClick = { onAction(ExchangerAction.OnSubmit) },
                 modifier = Modifier.padding(horizontal = 20.dp),
                 enabled = state.isSubmitButtonEnabled
             )
         }
-
-
-        /*
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                        .imePadding(),
-
-                    ) {
-                    Text("My Balances")
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        state.availableBalances.forEach { item ->
-                            Text(item.currencyType + " " + item.currencyAmount.formatAmount())
-                        }
-                    }
-                    Text("Exchange Rates")
-
-
-                    CurrencyExchangeRow(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Default.KeyboardArrowDown,
-                                contentDescription = null
-                            )
-                        },
-                        onChangeAmount = { amount ->
-                            onAction(
-                                ExchangerAction.OnChangeSellAmount(amount)
-                            )
-                        },
-                        title = "Sell",
-                        amount = state.sellAmountText,
-                        isExpanded = state.showSellCurrencyList,
-
-                        selectedCurrency = state.selectedSellCurrency,
-                        currencyList = state.exchangeCurrencyList,
-
-                        )
-
-                    HorizontalDivider()
-
-                    CurrencyExchangeRow(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Default.KeyboardArrowUp,
-                                contentDescription = null
-                            )
-                        },
-
-                        currencyList = state.exchangeCurrencyList,
-                        onClickCurrency = {
-                            onAction(
-                                ExchangerAction.OnChangeBuyCurrency(it)
-                            )
-                        },
-                        isExpanded = state.showBuyCurrencyList,
-                        showDropDown = {
-                            onAction(
-                                ExchangerAction.OnClickChangeBuyCurrency
-                            )
-                        },
-                        dismissDropDown = {
-                            onAction(
-                                ExchangerAction.OnDismissBuyCurrencyList
-                            )
-                        },
-                        title = "Receive",
-                        amount = state.buyAmount,
-                        selectedCurrency = state.selectedBuyCurrency
-                    )
-                    Spacer(Modifier.weight(1f))
-                    Button(
-                        onClick = {
-                            onAction(ExchangerAction.Load1000EuroToWallet)
-                        }
-                    ) {
-                        Text("Load 1000 EUR to Wallet")
-                    }
-                    Button(
-                        onClick = {
-                            onAction(ExchangerAction.IncreaseFreeExchangeCount)
-                        }
-                    ) {
-                        Text("Update Free Conversion Count to 5")
-                    }
-                    Text("Remaining Free Conversion Number ${state.remainingFreeConversions}")
-                    PrimaryButton(
-                        text = "SUBMIT",
-                        onClick = {
-                            onAction(ExchangerAction.OnSubmit)
-                        },
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                }*/
     }
 }
 

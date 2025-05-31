@@ -21,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.barissemerci.currencyexchanger.R
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.White
 import com.barissemerci.currencyexchanger.core.presentation.util.getDrawableIdForCurrency
@@ -64,7 +66,7 @@ fun CurrencyTextField(
         trailingIcon = {
             Icon(
                 Icons.Filled.KeyboardArrowDown,
-                contentDescription = "Sell Currency",
+                contentDescription = stringResource(id = R.string.sell_currency),
                 tint = White
             )
         },

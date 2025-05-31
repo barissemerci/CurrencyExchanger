@@ -2,8 +2,10 @@ package com.barissemerci.currencyexchanger.exchanger.presentation.currency_excha
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.barissemerci.currencyexchanger.R
 import com.barissemerci.currencyexchanger.core.domain.util.onError
 import com.barissemerci.currencyexchanger.core.domain.util.onSuccess
+import com.barissemerci.currencyexchanger.core.presentation.util.UiText
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.AvailableBalanceDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.commission_rule.CommissionRuleType
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
@@ -54,7 +56,9 @@ class ExchangerViewModel(
                                 )
                             }
                         }
-                    }.onError { }
+                    }.onError {
+                        //todo handle this case
+                    }
                     updateBuyAmount()
                     delay(5000)
                 }
@@ -127,7 +131,13 @@ class ExchangerViewModel(
                                 )
                             }
                         }.onError {
-                            eventChannel.send(ExchangerEvent.ShowTransactionError("You don't have enough money"))
+                            eventChannel.send(
+                                ExchangerEvent.ShowTransactionError(
+                                    UiText.StringResource(
+                                        R.string.error_not_enough_money
+                                    )
+                                )
+                            )
                         }
                     }
 
