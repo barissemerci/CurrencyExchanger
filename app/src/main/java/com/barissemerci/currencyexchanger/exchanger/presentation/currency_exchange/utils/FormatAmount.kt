@@ -3,10 +3,12 @@ package com.barissemerci.currencyexchanger.exchanger.presentation.currency_excha
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-fun BigDecimal.formatAmount(): String {
+fun BigDecimal.formatAmount(
+    scale: Int = 2,
+): String {
     return if (this.stripTrailingZeros().scale() <= 0) {
         this.toBigInteger().toString()
     } else {
-        this.setScale(2, RoundingMode.HALF_EVEN).toPlainString()
+        this.setScale(scale, RoundingMode.HALF_EVEN).toPlainString()
     }
 }
