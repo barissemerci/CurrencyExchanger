@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
 import com.barissemerci.currencyexchanger.core.presentation.util.Route
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerAction
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerScreenRoot
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerViewModel
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_select.CurrencySelectScreenRoot
@@ -56,17 +57,17 @@ class MainActivity : ComponentActivity() {
                         }
                     ) {
                         CurrencySelectScreenRoot(
-                            onCurrencySelected = {
-
+                            onCurrencySelected = { currency ->
+                                viewModel.onAction(ExchangerAction.OnChangeBuyCurrency(currency))
+                                navController.popBackStack()
                             },
+                            currencies = viewModel.state.value.exchangeCurrencyList,
                             onBackClick = {
                                 navController.popBackStack()
                             }
                         )
                     }
                 }
-
-
             }
         }
     }

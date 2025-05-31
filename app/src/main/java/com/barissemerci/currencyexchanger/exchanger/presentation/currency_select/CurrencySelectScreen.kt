@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.barissemerci.currencyexchanger.R
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.dropdowns.Selectable
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.DarkGray
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
@@ -32,15 +33,18 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.W
 @Composable
 
 fun CurrencySelectScreenRoot(
-    onCurrencySelected: (Currency) -> Unit,
-    onBackClick: () -> Unit
+    onCurrencySelected: (Int) -> Unit,
+    onBackClick: () -> Unit,
+    currencies: List<Selectable>
     //  viewModel:  = koinViewModel()
 
 ) {
 
     CurrencySelectScreen(
         onCurrencySelected = onCurrencySelected,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        currencies = currencies,
+
         //   state = viewModel.state,
 
         //    onAction = viewModel::onAction
@@ -49,44 +53,20 @@ fun CurrencySelectScreenRoot(
 
 }
 
-data class Currency(
-    val code: String,
-    val name: String,
-    val flagResId: Int
-)
-
 
 @Composable
 private fun CurrencySelectScreen(
-    onCurrencySelected: (Currency) -> Unit,
-    onBackClick: () -> Unit
+    onCurrencySelected: (Int) -> Unit,
+    onBackClick: () -> Unit,
+    currencies: List<Selectable>,
     // state: ,
-
     //  onAction: () -> Unit
 
 ) {
-
-    val currencies = listOf(
-        Currency("ARS", "Argentine peso", R.drawable.ic_android_black_24dp),
-        Currency("AUD", "Australian dollar", R.drawable.ic_android_black_24dp),
-        Currency("BDT", "Bangladeshi taka", R.drawable.ic_android_black_24dp),
-        Currency("BGN", "Bulgarian lev", R.drawable.ic_android_black_24dp),
-        Currency("BRL", "Brazilian real", R.drawable.ic_android_black_24dp),
-        Currency("CAD", "Canadian dollar", R.drawable.ic_android_black_24dp),
-        Currency("CHF", "Swiss franc", R.drawable.ic_android_black_24dp),
-        Currency("CNY", "Chinese yuan", R.drawable.ic_android_black_24dp),
-        Currency("EUR", "Euro", R.drawable.ic_android_black_24dp),
-        Currency("GBP", "British pound", R.drawable.ic_android_black_24dp),
-        Currency("JPY", "Japanese yen", R.drawable.ic_android_black_24dp),
-        Currency("USD", "US dollar", R.drawable.ic_android_black_24dp)
-    )
-
-
     var searchQuery by remember { mutableStateOf("") }
     val filteredCurrencies = remember(searchQuery) {
         currencies.filter { currency ->
-            currency.code.contains(searchQuery, ignoreCase = true) ||
-                    currency.name.contains(searchQuery, ignoreCase = true)
+            currency.currency.contains(searchQuery, ignoreCase = true)
         }
     }
 
@@ -142,7 +122,7 @@ private fun CurrencySelectScreen(
                     .background(Gray, RoundedCornerShape(8.dp)),
                 placeholder = {
                     Text(
-                        text = "Search for a currency / country",
+                        text = "Search for a currency",
                         color = LightGray
                     )
                 },
@@ -169,13 +149,12 @@ private fun CurrencySelectScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(filteredCurrencies) { currency ->
-                    val isSelected = currency.code == "BDT" // Örnek olarak BDT seçili
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { onCurrencySelected(currency) }
+                            .clickable { onCurrencySelected(currencies.indexOf(currency)) }
                             .then(
-                                if (isSelected) {
+                                if (currency.isSelected) {
                                     Modifier.border(
                                         width = 1.dp,
                                         color = Green,
@@ -185,7 +164,7 @@ private fun CurrencySelectScreen(
                                     Modifier
                                 }
                             ),
-                        color = if (isSelected) DarkGray else Gray,
+                        color = if (currency.isSelected) DarkGray else Gray,
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Row(
@@ -199,8 +178,8 @@ private fun CurrencySelectScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Image(
-                                    painter = painterResource(id = currency.flagResId),
-                                    contentDescription = currency.code,
+                                    painter = painterResource(id = R.drawable.ic_android_black_24dp),
+                                    contentDescription = currency.currency,
                                     modifier = Modifier
                                         .size(48.dp)
                                         .clip(CircleShape)
@@ -211,19 +190,15 @@ private fun CurrencySelectScreen(
                                         .padding(start = 16.dp)
                                 ) {
                                     Text(
-                                        text = currency.code,
+                                        text = currency.currency,
                                         style = MaterialTheme.typography.titleSmall,
                                         color = White
                                     )
-                                    Text(
-                                        text = currency.name,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = LightGray
-                                    )
+
                                 }
                             }
 
-                            if (isSelected) {
+                            if (currency.isSelected) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_android_black_24dp),
                                     contentDescription = "Selected",
@@ -250,7 +225,12 @@ private fun CurrencySelectScreenPreview() {
 
         CurrencySelectScreen(
             onCurrencySelected = { },
-            onBackClick = { }
+            onBackClick = { },
+            currencies = listOf(
+                Selectable(currency = "USD", isSelected = true),
+                Selectable(currency = "EUR", isSelected = false),
+                Selectable(currency = "GBP", isSelected = false),
+            ),
 
             //     state = (),
 
