@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,7 +31,6 @@ import com.barissemerci.currencyexchanger.core.presentation.util.ObserveAsEvents
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.AvailableBalancesCard
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.ConversionResultDialog
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.ConverterCard
-import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.InfoCard
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import org.koin.androidx.compose.koinViewModel
 import java.math.BigDecimal
@@ -99,7 +99,9 @@ private fun ExchangerScreen(
                 buyAmount = state.conversionResult?.buyAmount?.formatAmount() ?: "",
                 fromCurrency = state.conversionResult?.fromCurrency ?: "",
                 toCurrency = state.conversionResult?.toCurrency ?: "",
-                commissionFee = state.conversionResult?.commissionFee ?: BigDecimal.ZERO
+                commissionFee = state.conversionResult?.commissionFee ?: BigDecimal.ZERO,
+                totalDeducted = state.conversionResult?.totalDeducted ?: BigDecimal.ZERO,
+                exchangeRate = state.conversionResult?.rate ?: BigDecimal.ZERO
             )
         }
         Column(
@@ -138,7 +140,15 @@ private fun ExchangerScreen(
                 }
             )
 
-            InfoCard()
+            Button(
+                onClick = {
+                    onAction(ExchangerAction.Load1000EuroToWallet)
+                }
+            ) {
+                Text("Load 1000 EUR to Wallet")
+            }
+
+
             Spacer(modifier = Modifier.weight(1f))
             PrimaryButton(
                 text = "Submit",
