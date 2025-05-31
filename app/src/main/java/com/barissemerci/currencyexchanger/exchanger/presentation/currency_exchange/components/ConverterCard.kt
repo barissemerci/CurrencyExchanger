@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.DarkGray
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Gray
@@ -27,7 +28,14 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.W
 
 
 @Composable
-fun ConverterCard(onCurrencySelect: () -> Unit) {
+fun ConverterCard(
+    buyAmount: String,
+    sellAmount: String,
+    onCurrencySelect: () -> Unit,
+    selectedBuyCurrency: String,
+    onSellAmountChange: (String) -> Unit,
+    onDone: () -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -38,37 +46,14 @@ fun ConverterCard(onCurrencySelect: () -> Unit) {
         ) {
             Column {
                 // From Currency Input
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
-                        .background(
-                            Black,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .padding(20.dp),
-
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "500",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = White
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = "USD",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = Green
-                        )
+                CurrencyTextField(
+                    amount = sellAmount,
+                    onSellAmountChange = onSellAmountChange,
+                    onDone = {
+                        onDone()
                     }
-                }
+                )
 
-                // To Currency Input
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -82,7 +67,8 @@ fun ConverterCard(onCurrencySelect: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "2799.83",
+                        text = buyAmount,
+                        fontSize = 24.sp,
                         style = MaterialTheme.typography.titleLarge,
                         color = White
                     )
@@ -92,7 +78,7 @@ fun ConverterCard(onCurrencySelect: () -> Unit) {
                         modifier = Modifier.clickable(onClick = onCurrencySelect)
                     ) {
                         Text(
-                            text = "BRL",
+                            text = selectedBuyCurrency,
                             style = MaterialTheme.typography.titleSmall,
                             color = Green
                         )
