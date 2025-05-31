@@ -12,26 +12,18 @@ class DataStoreExchangeCountDataSource(
     private val dataStore: DataStore<Preferences>
 ) : ExchangeCountDataSource {
 
-    override val remainingFreeConversions: Flow<Int> = dataStore.data
+    override val exchangeCount: Flow<Int> = dataStore.data
         .map { prefs ->
-            prefs[PreferenceKeys.FREE_CONVERSION_COUNT] ?: 5
+            prefs[PreferenceKeys.EXCHANGE_COUNT] ?: 0
         }
 
-    override suspend fun decrementFreeConversion() {
-        dataStore.edit { prefs ->
-            val current = prefs[PreferenceKeys.FREE_CONVERSION_COUNT] ?: 5
-            if (current > 0) {
-                prefs[PreferenceKeys.FREE_CONVERSION_COUNT] = current - 1
-            }
-        }
-    }
 
-    override suspend fun incrementFreeConversion() {
+    override suspend fun incrementExchangeCount() {
 
         dataStore.edit { prefs ->
-            val current = prefs[PreferenceKeys.FREE_CONVERSION_COUNT] ?: 5
+            val current = prefs[PreferenceKeys.EXCHANGE_COUNT] ?: 0
 
-            prefs[PreferenceKeys.FREE_CONVERSION_COUNT] = current + 1
+            prefs[PreferenceKeys.EXCHANGE_COUNT] = current + 1
 
         }
     }
