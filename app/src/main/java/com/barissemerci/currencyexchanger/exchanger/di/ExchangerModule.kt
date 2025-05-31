@@ -11,6 +11,7 @@ import com.barissemerci.currencyexchanger.exchanger.data.networking.RemoteExchan
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.AvailableBalanceDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertBuyAmountUseCase
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerViewModel
 import io.ktor.client.engine.cio.CIO
@@ -39,6 +40,7 @@ val exchangerModule = module {
     singleOf(::RoomAvailableBalanceDataSource).bind<AvailableBalanceDataSource>()
 
     singleOf(::ConvertCurrencyUseCase)
+    singleOf(::ConvertBuyAmountUseCase)
 
 
 }

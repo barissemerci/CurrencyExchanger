@@ -4,6 +4,7 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.dropdow
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.Balance
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRates
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConversionResult
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import java.math.BigDecimal
 
 data class ExchangerState(
@@ -11,12 +12,11 @@ data class ExchangerState(
     val exchangeCurrencyList: List<Selectable> = emptyList(),
     val availableBalances: List<Balance> = emptyList(),
 
-    val sellAmountText: String = "",
+    val sellAmountText: String = BigDecimal.ZERO.formatAmount(),
     val sellAmountValue: BigDecimal = BigDecimal.ZERO,
 
-    val buyAmount: String = "",
+    val buyAmount: String = BigDecimal.ZERO.formatAmount(),
     val selectedBuyCurrency: String = "USD",
-
 
     val selectedSellCurrency: String = "EUR",
 

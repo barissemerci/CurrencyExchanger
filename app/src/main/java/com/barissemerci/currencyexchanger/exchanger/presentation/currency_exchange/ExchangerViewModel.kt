@@ -7,8 +7,10 @@ import com.barissemerci.currencyexchanger.core.domain.util.onSuccess
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.AvailableBalanceDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertBuyAmountUseCase
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.mappers.toSelectableList
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +22,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 class ExchangerViewModel(
     exchangeRatesDataSource: ExchangeRatesDataSource,
     private val convertCurrencyUseCase: ConvertCurrencyUseCase,
     private val exchangeCountDataSource: ExchangeCountDataSource,
+    private val convertBuyAmountUseCase: ConvertBuyAmountUseCase,
     //TODO DELETE IT BEFORE PUSHING
     private val availableBalanceDataSource: AvailableBalanceDataSource
 
@@ -45,7 +47,9 @@ class ExchangerViewModel(
                         if (exchangeRates != null) {
                             _state.update {
                                 it.copy(
-                                    exchangeCurrencyList = exchangeRates.rates.toSelectableList()
+                                    exchangeCurrencyList = exchangeRates.rates.toSelectableList(
+                                        it.selectedBuyCurrency
+                                    )
                                 )
                             }
                         }
@@ -61,7 +65,6 @@ class ExchangerViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = ExchangerState()
         )
-
 
 
     private val eventChannel = Channel<ExchangerEvent>()
@@ -80,7 +83,6 @@ class ExchangerViewModel(
                             },
                         selectedBuyCurrency = it.exchangeCurrencyList[action.currencyIndex].currency,
                         showSellCurrencyList = false
-
                     )
                 }
             }
@@ -173,30 +175,31 @@ class ExchangerViewModel(
         val amount = state.sellAmountValue
 
         val fromRate = rates.rates[state.selectedSellCurrency]
-        println("Converted fromRate: $fromRate")
         val toRate = rates.rates[state.selectedBuyCurrency]
-        println("Converted toRate: $toRate")
 
         if (fromRate != null && toRate != null) {
-            val rate = toRate.divide(fromRate, 6, RoundingMode.HALF_EVEN)
-            val converted = amount.multiply(rate)
-            val formatted = converted.setScale(2, RoundingMode.HALF_EVEN).toPlainString()
-            println("Converted amount: $formatted")
+            val converted = convertBuyAmountUseCase.invoke(
+                sellAmount = amount,
+                toRate = toRate,
+                fromRate = fromRate
+            )
+
+            val formatted = converted.formatAmount()
             _state.update { it.copy(buyAmount = formatted) }
         }
     }
 
 
     private fun observeAvailableBalances() {
-    viewModelScope.launch {
-        availableBalanceDataSource.getAllBalances().collect{balances->
-            _state.update {
-                it.copy(availableBalances = balances)
+        viewModelScope.launch {
+            availableBalanceDataSource.getAllBalances().collect { balances ->
+                _state.update {
+                    it.copy(availableBalances = balances)
+                }
+
+
             }
-
-
         }
-    }
 
     }
 }
