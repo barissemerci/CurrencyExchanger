@@ -3,13 +3,13 @@ package com.barissemerci.currencyexchanger.exchanger.presentation.currency_excha
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.dropdowns.Selectable
 import java.math.BigDecimal
 
-fun Map<String, BigDecimal>.toSelectableList(): List<Selectable> {
-
+fun Map<String, BigDecimal>.toSelectableList(
+    selectedCurrency: String
+): List<Selectable> {
     return this.map {
         Selectable(
             currency = it.key,
-            isSelected = false
+            isSelected = it.key == selectedCurrency
         )
     }
-
 }
