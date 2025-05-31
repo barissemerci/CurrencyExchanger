@@ -24,9 +24,10 @@ data class ExchangerState(
     val showSellCurrencyList: Boolean = false,
     val showBuyCurrencyList: Boolean = false,
 
-
     val remainingFreeConversions: Int = 0,
 
-    val conversionResult: ConversionResult? = null
+    val conversionResult: ConversionResult? = null,
+
+    val isSubmitButtonEnabled: Boolean = false,
 )
 

@@ -1,19 +1,26 @@
 package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -21,9 +28,12 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.buttons
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
 import com.barissemerci.currencyexchanger.core.presentation.util.ObserveAsEvents
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.AvailableBalancesCard
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.ConversionResultDialog
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.ConverterCard
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components.InfoCard
+import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import org.koin.androidx.compose.koinViewModel
+import java.math.BigDecimal
 
 @Composable
 
@@ -68,29 +78,63 @@ private fun ExchangerScreen(
     state: ExchangerState,
     onAction: (ExchangerAction) -> Unit
 ) {
+    val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Currency Exchanger") }
             )
-        },
+        }
+
     ) { innerPadding ->
 
+        if (state.showConversionResultDialog) {
+            ConversionResultDialog(
+                onDismiss = {
+                    onAction(ExchangerAction.OnDismissConversionResultDialog)
+                },
+                sellAmount = state.conversionResult?.sellAmount?.formatAmount() ?: "",
+                buyAmount = state.conversionResult?.buyAmount?.formatAmount() ?: "",
+                fromCurrency = state.conversionResult?.fromCurrency ?: "",
+                toCurrency = state.conversionResult?.toCurrency ?: "",
+                commissionFee = state.conversionResult?.commissionFee ?: BigDecimal.ZERO
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    focusManager.clearFocus()
+                }
                 .padding(innerPadding)
-                .padding(horizontal = 20.dp)
-                .padding(top = 24.dp, bottom = 24.dp),
+                .verticalScroll(scrollState)
+                .imePadding()
+                .padding(horizontal = 20.dp, vertical = 20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
+
             AvailableBalancesCard(
                 balances = state.availableBalances
             )
 
             ConverterCard(
+                selectedBuyCurrency = state.selectedBuyCurrency,
+                selectedSellCurrency = state.selectedSellCurrency,
                 onCurrencySelect = {
                     onAction(ExchangerAction.OnClickChangeBuyCurrency)
+                },
+                sellAmount = state.sellAmountText,
+                onSellAmountChange = {
+                    onAction(ExchangerAction.OnChangeSellAmount(it))
+                },
+                buyAmount = state.buyAmount,
+                onDone = {
+                    onAction(ExchangerAction.OnSubmit)
                 }
             )
 
@@ -99,41 +143,14 @@ private fun ExchangerScreen(
             PrimaryButton(
                 text = "Submit",
                 onClick = { onAction(ExchangerAction.OnSubmit) },
+                modifier = Modifier.padding(horizontal = 20.dp),
+                enabled = state.isSubmitButtonEnabled
             )
         }
 
 
         /*
-                if (state.showConversionResultDialog) {
-                    BasicAlertDialog(
-                        onDismissRequest = { }
-                    ) {
-                        Surface(
-                            shape = MaterialTheme.shapes.medium,
-                            tonalElevation = 6.dp
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(24.dp)
-                            ) {
-                                Text("Title", style = MaterialTheme.typography.titleLarge)
-                                Spacer(Modifier.height(16.dp))
-                                Text("You converted ${state.conversionResult?.sellAmount} ${state.conversionResult?.fromCurrency} to ${state.conversionResult?.buyAmount} ${state.conversionResult?.toCurrency}. Comission Fee: ${state.conversionResult?.commissionFee} ${state.conversionResult?.fromCurrency} ")
-                                Spacer(Modifier.height(24.dp))
-                                Row(
-                                    horizontalArrangement = Arrangement.End,
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
 
-                                    TextButton(onClick = {
-                                        onAction(ExchangerAction.OnDismissConversionResultDialog)
-                                    }) {
-                                        Text("OK")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
