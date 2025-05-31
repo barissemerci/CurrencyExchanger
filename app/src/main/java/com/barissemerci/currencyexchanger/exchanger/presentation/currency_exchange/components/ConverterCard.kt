@@ -1,5 +1,6 @@
 package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,19 +14,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.barissemerci.currencyexchanger.R
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.DarkGray
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Gray
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.White
+import com.barissemerci.currencyexchanger.core.presentation.util.getDrawableIdForCurrency
 
 
 @Composable
@@ -89,11 +97,24 @@ fun ConverterCard(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable(onClick = onCurrencySelect)
                     ) {
+                        Image(
+                            painter = painterResource(id = getDrawableIdForCurrency(selectedBuyCurrency)),
+                            contentDescription = selectedBuyCurrency,
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                        )
                         Text(
                             text = selectedBuyCurrency,
                             style = MaterialTheme.typography.titleSmall,
                             color = Green
                         )
+                        Icon(
+                            Icons.Filled.KeyboardArrowDown,
+                            contentDescription = "Sell Currency",
+                            tint = White
+                        )
+
                     }
                 }
             }
@@ -114,7 +135,10 @@ fun ConverterCard(
                     modifier = Modifier.size(40.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Switch icon placeholder
+                    Icon(
+                        painter = painterResource(R.drawable.ic_swap_vert),
+                        contentDescription = "Switch Currency",
+                    )
                 }
             }
         }

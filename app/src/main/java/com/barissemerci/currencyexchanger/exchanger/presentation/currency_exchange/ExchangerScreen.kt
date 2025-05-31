@@ -116,8 +116,8 @@ private fun ExchangerScreen(
                 .padding(innerPadding)
                 .verticalScroll(scrollState)
                 .imePadding()
-                .padding(horizontal = 20.dp, vertical = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+                .padding(horizontal = 20.dp, vertical = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
 
             AvailableBalancesCard(
