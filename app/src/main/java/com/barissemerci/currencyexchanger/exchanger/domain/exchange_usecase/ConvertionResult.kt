@@ -8,5 +8,6 @@ data class ConversionResult(
     val sellAmount: BigDecimal,
     val buyAmount: BigDecimal,
     val commissionFee: BigDecimal,
-    val rate: BigDecimal
+    val rate: BigDecimal,
+    val totalDeducted: BigDecimal
 )
