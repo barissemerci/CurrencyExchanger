@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -53,11 +54,20 @@ fun ConverterCard(
                     onSellAmountChange = onSellAmountChange,
                     onDone = {
                         onDone()
-                    }
+                    },
+                    modifier = Modifier
+                        .height(100.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                        .background(
+                            Black,
+                            shape = RoundedCornerShape(16.dp)
+                        )
                 )
 
                 Row(
                     modifier = Modifier
+                        .height(100.dp)
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp, vertical = 10.dp)
                         .background(
