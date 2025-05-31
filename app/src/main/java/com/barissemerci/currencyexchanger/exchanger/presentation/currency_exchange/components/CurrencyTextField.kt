@@ -1,8 +1,5 @@
 package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,7 +18,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
 
 @Composable
@@ -37,13 +33,7 @@ fun CurrencyTextField(
         value = amount,
         onValueChange = onSellAmountChange,
         textStyle = TextStyle(fontSize = 24.sp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 10.dp)
-            .background(
-                Black,
-                shape = RoundedCornerShape(16.dp)
-            ),
+        modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Green,
