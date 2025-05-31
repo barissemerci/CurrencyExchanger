@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.barissemerci.currencyexchanger.core.domain.util.onError
 import com.barissemerci.currencyexchanger.core.domain.util.onSuccess
 import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.AvailableBalanceDataSource
+import com.barissemerci.currencyexchanger.exchanger.domain.commission_rule.CommissionRuleType
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertBuyAmountUseCase
@@ -116,7 +117,8 @@ class ExchangerViewModel(
                             exchangeRate = exchangeRate,
                             fromCurrency = _state.value.selectedSellCurrency,
                             toCurrency = _state.value.selectedBuyCurrency,
-                            amount = _state.value.sellAmountValue
+                            amount = _state.value.sellAmountValue,
+                            ruleType = CommissionRuleType.FIRST_5_FREE
                         ).onSuccess { conversionResult ->
                             _state.update {
                                 it.copy(
@@ -128,14 +130,6 @@ class ExchangerViewModel(
                             eventChannel.send(ExchangerEvent.ShowTransactionError("You don't have enough money"))
                         }
                     }
-
-                }
-            }
-
-
-            ExchangerAction.IncreaseFreeExchangeCount -> {
-                viewModelScope.launch {
-                    exchangeCountDataSource.incrementFreeConversion()
 
                 }
             }
@@ -156,7 +150,7 @@ class ExchangerViewModel(
 
     private fun observeRemainingConversions() {
         viewModelScope.launch {
-            exchangeCountDataSource.remainingFreeConversions.collect { count ->
+            exchangeCountDataSource.exchangeCount.collect { count ->
                 _state.update {
                     it.copy(remainingFreeConversions = count)
                 }
