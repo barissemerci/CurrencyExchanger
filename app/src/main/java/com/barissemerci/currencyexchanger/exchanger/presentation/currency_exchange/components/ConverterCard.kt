@@ -32,6 +32,7 @@ fun ConverterCard(
     buyAmount: String,
     sellAmount: String,
     onCurrencySelect: () -> Unit,
+    selectedSellCurrency: String,
     selectedBuyCurrency: String,
     onSellAmountChange: (String) -> Unit,
     onDone: () -> Unit
@@ -47,6 +48,7 @@ fun ConverterCard(
             Column {
                 // From Currency Input
                 CurrencyTextField(
+                    currency = selectedSellCurrency,
                     amount = sellAmount,
                     onSellAmountChange = onSellAmountChange,
                     onDone = {

@@ -26,6 +26,7 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.G
 
 @Composable
 fun CurrencyTextField(
+    currency: String,
     amount: String,
     onSellAmountChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -63,7 +64,7 @@ fun CurrencyTextField(
         trailingIcon = { Icon(Icons.Filled.KeyboardArrowDown, "") },
         suffix = {
             Text(
-                text = "USD",
+                text = currency,
                 style = MaterialTheme.typography.titleSmall,
                 color = Green
             )
