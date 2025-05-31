@@ -1,0 +1,72 @@
+package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Black
+import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
+
+@Composable
+fun CurrencyTextField(
+    amount: String,
+    onSellAmountChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    onDone: () -> Unit
+) {
+
+    OutlinedTextField(
+        value = amount,
+        onValueChange = onSellAmountChange,
+        textStyle = TextStyle(fontSize = 24.sp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .background(
+                Black,
+                shape = RoundedCornerShape(16.dp)
+            ),
+        shape = RoundedCornerShape(16.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Green,
+            unfocusedBorderColor = Color.Transparent,
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Number
+
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onDone()
+            }
+        ),
+        placeholder = { Text("0", fontSize = 24.sp, color = Color.Gray) },
+        singleLine = true,
+        trailingIcon = { Icon(Icons.Filled.KeyboardArrowDown, "") },
+        suffix = {
+            Text(
+                text = "USD",
+                style = MaterialTheme.typography.titleSmall,
+                color = Green
+            )
+        }
+    )
+}
