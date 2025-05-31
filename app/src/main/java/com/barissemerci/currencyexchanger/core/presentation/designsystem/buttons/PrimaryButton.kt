@@ -18,9 +18,11 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.G
 fun PrimaryButton(
     text: String,
     onClick: () -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Button(
+        enabled = enabled,
         onClick = { onClick()},
         modifier = modifier
             .fillMaxWidth()
@@ -44,6 +46,7 @@ private fun PrimaryButtonPreview() {
         PrimaryButton(
             text = "Primary Button",
             onClick = {},
+            enabled = true,
         )
     }
 }

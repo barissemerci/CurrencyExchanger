@@ -94,11 +94,14 @@ class ExchangerViewModel(
                     _state.update {
                         it.copy(
                             sellAmountText = action.amount,
-                            sellAmountValue = parsed ?: BigDecimal.ZERO
+                            sellAmountValue = parsed ?: BigDecimal.ZERO,
+                            isSubmitButtonEnabled = action.amount.isNotBlank() && parsed != BigDecimal.ZERO
                         )
                     }
+
                     updateBuyAmount()
                 }
+
 
             }
 
@@ -127,18 +130,8 @@ class ExchangerViewModel(
                     }
 
                 }
-                _state.update { it.copy(showConversionResultDialog = true) }
             }
 
-            ExchangerAction.OnClickChangeBuyCurrency -> {
-                _state.update { it.copy(showBuyCurrencyList = true) }
-
-            }
-
-
-            ExchangerAction.OnDismissBuyCurrencyList -> {
-                _state.update { it.copy(showBuyCurrencyList = false) }
-            }
 
             ExchangerAction.IncreaseFreeExchangeCount -> {
                 viewModelScope.launch {
@@ -156,6 +149,8 @@ class ExchangerViewModel(
             ExchangerAction.OnDismissConversionResultDialog -> {
                 _state.update { it.copy(showConversionResultDialog = false) }
             }
+
+            else -> Unit
         }
     }
 
