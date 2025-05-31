@@ -51,7 +51,10 @@ fun ExchangerScreenRoot(
             is ExchangerEvent.ShowTransactionError -> {
                 Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
             }
-            else -> Unit
+
+            is ExchangerEvent.ShowFetchingCurrencyError -> {
+                Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
+            }
         }
     }
     ExchangerScreen(

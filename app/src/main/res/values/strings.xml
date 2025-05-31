@@ -13,6 +13,7 @@
     <string name="currency_exchanger">Currency Exchanger</string>
     <string name="submit">Submit</string>
     <string name="error_not_enough_money">"You don't have enough money"</string>
+    <string name="error_fetching_currencies">"An error occurred while fetching the currencies."</string>
     <string name="back">Back</string>
     <string name="search_for_a_currency">Search for a currency</string>
     <string name="search">Search</string>

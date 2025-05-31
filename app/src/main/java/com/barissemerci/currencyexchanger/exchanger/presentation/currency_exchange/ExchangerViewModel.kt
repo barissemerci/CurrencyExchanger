@@ -57,7 +57,13 @@ class ExchangerViewModel(
                             }
                         }
                     }.onError {
-                        //todo handle this case
+                        eventChannel.send(
+                            ExchangerEvent.ShowFetchingCurrencyError(
+                                UiText.StringResource(
+                                    R.string.error_fetching_currencies
+                                )
+                            )
+                        )
                     }
                     updateBuyAmount()
                     delay(5000)
