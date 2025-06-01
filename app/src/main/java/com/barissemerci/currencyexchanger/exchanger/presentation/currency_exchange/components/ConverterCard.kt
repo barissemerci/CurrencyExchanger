@@ -134,7 +134,7 @@ fun ConverterCard(
             modifier = Modifier
                 .align(Alignment.Center)
                 .offset(y = 0.dp)
-                .clickable { onSwitchCurrencies() }
+
         ) {
             Surface(
                 modifier = Modifier.size(40.dp),
@@ -142,7 +142,7 @@ fun ConverterCard(
                 shape = CircleShape
             ) {
                 Box(
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(40.dp).clickable { onSwitchCurrencies() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(

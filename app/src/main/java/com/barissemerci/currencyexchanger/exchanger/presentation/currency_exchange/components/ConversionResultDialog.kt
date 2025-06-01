@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -30,7 +31,6 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.B
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.DarkGray
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.Green
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.LightGray
-import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.White
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import java.math.BigDecimal
 
@@ -160,7 +160,8 @@ private fun DetailRow(
             text = value,
             fontSize = 14.sp,
             fontWeight = if (isHighlighted) FontWeight.Bold else FontWeight.Normal,
-            color = Color.White
+            color = Color.White,
+            textAlign = TextAlign.End
         )
     }
 }
