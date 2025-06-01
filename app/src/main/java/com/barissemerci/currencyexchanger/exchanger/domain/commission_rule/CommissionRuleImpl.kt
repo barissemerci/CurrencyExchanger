@@ -31,7 +31,7 @@ class FreeUnder200EuroRule : CommissionRule {
 // For first 5 conversion, commission is free
 class First5ConversionsFreeRule : CommissionRule {
     private val freeLimit: Int = 5
-    private val commissionRate: BigDecimal = BigDecimal("0.01")
+    private val commissionRate: BigDecimal = BigDecimal("0.007")
     override fun calculateCommission(conversionCount: Int, amount: BigDecimal): BigDecimal {
         return if (conversionCount <= freeLimit) {
             BigDecimal.ZERO
