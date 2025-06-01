@@ -2,9 +2,11 @@
 
 This app allows users to exchange currencies in real time. It fetches the latest currency rates every 5 seconds, ensuring up-to-date information for accurate conversions. Users can select their desired currencies and perform exchanges quickly and easily through a clean and intuitive interface.
 
-<img src="https://github.com/barissemerci/CurrencyExchanger/blob/screenshots/screenshots/screeenshot_1.png">
+<img src="https://github.com/user-attachments/assets/24a2551e-4ab0-4190-833d-250038613604">
+
 
 ## Supported features
+
 * Exchange rate updates every 5 seconds
 * Selection of currencies to buy and sell
 * Easy modification of the commission calculation rule
@@ -35,4 +37,4 @@ This app allows users to exchange currencies in real time. It fetches the latest
 
 
 ## Screen Recording
-https://github.com/user-attachments/assets/2519c6dc-cceb-4d71-8abe-f98531242865
+https://github.com/user-attachments/assets/ad9b8906-6044-40ba-aa4d-c12276422e0d
