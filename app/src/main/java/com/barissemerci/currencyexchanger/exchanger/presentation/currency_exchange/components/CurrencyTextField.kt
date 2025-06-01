@@ -1,6 +1,7 @@
 package com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -36,6 +37,7 @@ import com.barissemerci.currencyexchanger.core.presentation.util.getDrawableIdFo
 fun CurrencyTextField(
     currency: String,
     amount: String,
+    onSellCurrencyChange: () -> Unit,
     onSellAmountChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     onDone: () -> Unit
@@ -63,18 +65,14 @@ fun CurrencyTextField(
         ),
         placeholder = { Text("0", fontSize = 24.sp, color = Color.Gray) },
         singleLine = true,
-        trailingIcon = {
-            Icon(
-                Icons.Filled.KeyboardArrowDown,
-                contentDescription = stringResource(id = R.string.sell_currency),
-                tint = White
-            )
-        },
+
         suffix = {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    onSellCurrencyChange()
+                }
             ) {
                 Image(
                     painter = painterResource(id = getDrawableIdForCurrency(currency)),
@@ -88,7 +86,13 @@ fun CurrencyTextField(
                     style = MaterialTheme.typography.titleSmall,
                     color = Green
                 )
+                Icon(
+                    Icons.Filled.KeyboardArrowDown,
+                    contentDescription = stringResource(id = R.string.sell_currency),
+                    tint = White
+                )
             }
+
 
         }
     )

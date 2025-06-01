@@ -9,6 +9,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.CurrencyExchangerTheme
 import com.barissemerci.currencyexchanger.core.presentation.util.Route
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerAction
@@ -39,8 +40,8 @@ class MainActivity : ComponentActivity() {
                     ) {
                         ExchangerScreenRoot(
                             viewModel = viewModel,
-                            onNavigateToCurrencyList = {
-                                navController.navigate(Route.CurrencySelectScreen)
+                            onNavigateToCurrencyList = { isSellCurrency ->
+                                navController.navigate(Route.CurrencySelectScreen(isSellCurrency))
                             }
                         )
                     }
@@ -56,12 +57,19 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     ) {
+                        val args = it.toRoute<Route.CurrencySelectScreen>()
+
                         CurrencySelectScreenRoot(
                             onCurrencySelected = { currency ->
-                                viewModel.onAction(ExchangerAction.OnChangeBuyCurrency(currency))
+                                if (args.isSellCurrency) {
+                                    viewModel.onAction(ExchangerAction.OnChangeSellCurrency(currency))
+
+                                } else {
+                                    viewModel.onAction(ExchangerAction.OnChangeBuyCurrency(currency))
+                                }
                                 navController.popBackStack()
                             },
-                            currencies = viewModel.state.value.exchangeCurrencyList,
+                            currencies = if (args.isSellCurrency) viewModel.state.value.exchangeSellCurrencyList else viewModel.state.value.exchangeBuyCurrencyList,
                             onBackClick = {
                                 navController.popBackStack()
                             }

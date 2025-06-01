@@ -49,8 +49,11 @@ class ExchangerViewModel(
                         if (exchangeRates != null) {
                             _state.update {
                                 it.copy(
-                                    exchangeCurrencyList = exchangeRates.rates.toSelectableList(
+                                    exchangeBuyCurrencyList = exchangeRates.rates.toSelectableList(
                                         it.selectedBuyCurrency
+                                    ),
+                                    exchangeSellCurrencyList =  exchangeRates.rates.toSelectableList(
+                                        it.selectedSellCurrency
                                     )
                                 )
                             }
@@ -82,17 +85,30 @@ class ExchangerViewModel(
 
     fun onAction(action: ExchangerAction) {
         when (action) {
-            is ExchangerAction.OnChangeBuyCurrency -> {
+            is ExchangerAction.OnChangeSellCurrency -> {
                 _state.update {
                     it.copy(
-                        exchangeCurrencyList =
-                            it.exchangeCurrencyList.mapIndexed { index, item ->
+                        exchangeSellCurrencyList =
+                            it.exchangeSellCurrencyList.mapIndexed { index, item ->
                                 if (index == action.currencyIndex) item.copy(isSelected = true) else item.copy(
                                     isSelected = false
                                 )
                             },
-                        selectedBuyCurrency = it.exchangeCurrencyList[action.currencyIndex].currency,
-                        showSellCurrencyList = false
+                        selectedSellCurrency = it.exchangeSellCurrencyList[action.currencyIndex].currency,
+                    )
+                }
+            }
+
+            is ExchangerAction.OnChangeBuyCurrency -> {
+                _state.update {
+                    it.copy(
+                        exchangeBuyCurrencyList =
+                            it.exchangeBuyCurrencyList.mapIndexed { index, item ->
+                                if (index == action.currencyIndex) item.copy(isSelected = true) else item.copy(
+                                    isSelected = false
+                                )
+                            },
+                        selectedBuyCurrency = it.exchangeBuyCurrencyList[action.currencyIndex].currency,
                     )
                 }
             }
@@ -154,6 +170,7 @@ class ExchangerViewModel(
             }
 
             else -> Unit
+
         }
     }
 

@@ -40,7 +40,7 @@ import java.math.BigDecimal
 
 fun ExchangerScreenRoot(
     viewModel: ExchangerViewModel = koinViewModel(),
-    onNavigateToCurrencyList: () -> Unit = {}
+    onNavigateToCurrencyList: (Boolean) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -61,7 +61,11 @@ fun ExchangerScreenRoot(
         onAction = { action ->
             when (action) {
                 is ExchangerAction.OnClickChangeBuyCurrency -> {
-                    onNavigateToCurrencyList()
+                    onNavigateToCurrencyList(false)
+                }
+
+                is ExchangerAction.OnClickChangeSellCurrency -> {
+                    onNavigateToCurrencyList(true)
                 }
 
                 else -> Unit
@@ -128,8 +132,11 @@ private fun ExchangerScreen(
             ConverterCard(
                 selectedBuyCurrency = state.selectedBuyCurrency,
                 selectedSellCurrency = state.selectedSellCurrency,
-                onCurrencySelect = {
+                onBuyCurrencySelect = {
                     onAction(ExchangerAction.OnClickChangeBuyCurrency)
+                },
+                onSellCurrencySelect = {
+                    onAction(ExchangerAction.OnClickChangeSellCurrency)
                 },
                 sellAmount = state.sellAmountText,
                 onSellAmountChange = {

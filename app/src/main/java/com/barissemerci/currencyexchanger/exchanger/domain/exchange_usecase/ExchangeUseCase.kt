@@ -63,7 +63,7 @@ class ExchangeCurrencyUseCase(
 
             return Result.Success(
                 ConversionResult(
-                    fromCurrency = "EUR",
+                    fromCurrency = fromCurrency,
                     toCurrency = toCurrency,
                     sellAmount = amount,
                     buyAmount = convertedAmount,

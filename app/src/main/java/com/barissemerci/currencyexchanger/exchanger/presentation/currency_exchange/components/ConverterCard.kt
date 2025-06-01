@@ -41,7 +41,8 @@ import com.barissemerci.currencyexchanger.core.presentation.util.getDrawableIdFo
 fun ConverterCard(
     buyAmount: String,
     sellAmount: String,
-    onCurrencySelect: () -> Unit,
+    onSellCurrencySelect: () -> Unit,
+    onBuyCurrencySelect: () -> Unit,
     selectedSellCurrency: String,
     selectedBuyCurrency: String,
     onSellAmountChange: (String) -> Unit,
@@ -63,6 +64,9 @@ fun ConverterCard(
                     onSellAmountChange = onSellAmountChange,
                     onDone = {
                         onDone()
+                    },
+                    onSellCurrencyChange = {
+                        onSellCurrencySelect()
                     },
                     modifier = Modifier
                         .height(100.dp)
@@ -96,10 +100,14 @@ fun ConverterCard(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable(onClick = onCurrencySelect)
+                        modifier = Modifier.clickable(onClick = onBuyCurrencySelect)
                     ) {
                         Image(
-                            painter = painterResource(id = getDrawableIdForCurrency(selectedBuyCurrency)),
+                            painter = painterResource(
+                                id = getDrawableIdForCurrency(
+                                    selectedBuyCurrency
+                                )
+                            ),
                             contentDescription = selectedBuyCurrency,
                             modifier = Modifier
                                 .size(36.dp)

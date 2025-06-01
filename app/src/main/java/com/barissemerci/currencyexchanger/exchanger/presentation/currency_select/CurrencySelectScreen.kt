@@ -59,7 +59,6 @@ fun CurrencySelectScreenRoot(
     onCurrencySelected: (Int) -> Unit,
     onBackClick: () -> Unit,
     currencies: List<Selectable>
-
 ) {
 
     CurrencySelectScreen(
@@ -260,7 +259,7 @@ private fun CurrencySelectScreenPreview() {
                 Selectable(currency = "GBP", isSelected = false),
             ),
 
-        )
+            )
 
     }
 

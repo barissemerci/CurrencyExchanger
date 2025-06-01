@@ -9,7 +9,9 @@ import java.math.BigDecimal
 
 data class ExchangerState(
     val exchangeRates: ExchangeRates? = null,
-    val exchangeCurrencyList: List<Selectable> = emptyList(),
+    val exchangeBuyCurrencyList: List<Selectable> = emptyList(),
+    val exchangeSellCurrencyList: List<Selectable> = emptyList(),
+
     val availableBalances: List<Balance> = emptyList(),
 
     val sellAmountText: String = BigDecimal.ZERO.formatAmount(),
@@ -21,8 +23,6 @@ data class ExchangerState(
     val selectedSellCurrency: String = "EUR",
 
     val showConversionResultDialog: Boolean = false,
-    val showSellCurrencyList: Boolean = false,
-    val showBuyCurrencyList: Boolean = false,
 
     val remainingFreeConversions: Int = 0,
 

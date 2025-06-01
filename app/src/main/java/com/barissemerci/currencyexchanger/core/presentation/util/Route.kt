@@ -7,6 +7,6 @@ sealed interface Route {
     data object ExchangerScreen : Route
 
     @Serializable
-    data object CurrencySelectScreen : Route
+    data class CurrencySelectScreen(val isSellCurrency: Boolean) : Route
 
 }
