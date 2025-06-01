@@ -15,7 +15,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.coroutines.cancellation.CancellationException
 
-class ConvertCurrencyUseCase(
+class ExchangeCurrencyUseCase(
     private val exchangeCountDataSource: ExchangeCountDataSource,
     private val availableBalanceDataSource: AvailableBalanceDataSource
 ) {

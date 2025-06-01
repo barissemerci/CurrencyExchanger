@@ -11,7 +11,7 @@ import com.barissemerci.currencyexchanger.exchanger.domain.commission_rule.Commi
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertBuyAmountUseCase
-import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ExchangeCurrencyUseCase
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.mappers.toSelectableList
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.utils.formatAmount
 import kotlinx.coroutines.channels.Channel
@@ -28,7 +28,7 @@ import java.math.BigDecimal
 
 class ExchangerViewModel(
     exchangeRatesDataSource: ExchangeRatesDataSource,
-    private val convertCurrencyUseCase: ConvertCurrencyUseCase,
+    private val convertCurrencyUseCase: ExchangeCurrencyUseCase,
     private val exchangeCountDataSource: ExchangeCountDataSource,
     private val convertBuyAmountUseCase: ConvertBuyAmountUseCase,
     //TODO DELETE IT BEFORE PUSHING

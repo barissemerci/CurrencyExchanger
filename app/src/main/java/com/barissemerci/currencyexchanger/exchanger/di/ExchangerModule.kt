@@ -12,7 +12,7 @@ import com.barissemerci.currencyexchanger.exchanger.domain.available_balance.Ava
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_count.ExchangeCountDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_rates.ExchangeRatesDataSource
 import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertBuyAmountUseCase
-import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ConvertCurrencyUseCase
+import com.barissemerci.currencyexchanger.exchanger.domain.exchange_usecase.ExchangeCurrencyUseCase
 import com.barissemerci.currencyexchanger.exchanger.presentation.currency_exchange.ExchangerViewModel
 import io.ktor.client.engine.cio.CIO
 import org.koin.android.ext.koin.androidContext
@@ -39,7 +39,7 @@ val exchangerModule = module {
     singleOf(::DataStoreExchangeCountDataSource).bind<ExchangeCountDataSource>()
     singleOf(::RoomAvailableBalanceDataSource).bind<AvailableBalanceDataSource>()
 
-    singleOf(::ConvertCurrencyUseCase)
+    singleOf(::ExchangeCurrencyUseCase)
     singleOf(::ConvertBuyAmountUseCase)
 
 
