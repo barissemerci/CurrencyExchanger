@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -141,15 +140,6 @@ private fun ExchangerScreen(
                     onAction(ExchangerAction.OnSubmit)
                 }
             )
-
-            Button(
-                onClick = {
-                    onAction(ExchangerAction.Load1000EuroToWallet)
-                }
-            ) {
-                Text("Load 1000 EUR to Wallet")
-            }
-
 
             Spacer(modifier = Modifier.weight(1f))
             PrimaryButton(

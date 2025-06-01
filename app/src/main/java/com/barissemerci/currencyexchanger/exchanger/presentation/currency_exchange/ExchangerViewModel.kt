@@ -31,7 +31,6 @@ class ExchangerViewModel(
     private val convertCurrencyUseCase: ExchangeCurrencyUseCase,
     private val exchangeCountDataSource: ExchangeCountDataSource,
     private val convertBuyAmountUseCase: ConvertBuyAmountUseCase,
-    //TODO DELETE IT BEFORE PUSHING
     private val availableBalanceDataSource: AvailableBalanceDataSource
 
 ) : ViewModel() {
@@ -150,12 +149,6 @@ class ExchangerViewModel(
                 }
             }
 
-            ExchangerAction.Load1000EuroToWallet -> {
-                viewModelScope.launch {
-                    availableBalanceDataSource.updateBalance("EUR", BigDecimal(1000))
-                }
-            }
-
             ExchangerAction.OnDismissConversionResultDialog -> {
                 _state.update { it.copy(showConversionResultDialog = false) }
             }
@@ -201,8 +194,6 @@ class ExchangerViewModel(
                 _state.update {
                     it.copy(availableBalances = balances)
                 }
-
-
             }
         }
 
