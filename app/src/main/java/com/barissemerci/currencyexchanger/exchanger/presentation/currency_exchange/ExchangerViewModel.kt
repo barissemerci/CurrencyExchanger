@@ -52,7 +52,7 @@ class ExchangerViewModel(
                                     exchangeBuyCurrencyList = exchangeRates.rates.toSelectableList(
                                         it.selectedBuyCurrency
                                     ),
-                                    exchangeSellCurrencyList =  exchangeRates.rates.toSelectableList(
+                                    exchangeSellCurrencyList = exchangeRates.rates.toSelectableList(
                                         it.selectedSellCurrency
                                     )
                                 )
@@ -167,6 +167,16 @@ class ExchangerViewModel(
 
             ExchangerAction.OnDismissConversionResultDialog -> {
                 _state.update { it.copy(showConversionResultDialog = false) }
+            }
+
+            ExchangerAction.OnSwitchCurrencies -> {
+                _state.update {
+                    it.copy(
+                        selectedSellCurrency = it.selectedBuyCurrency,
+                        selectedBuyCurrency = it.selectedSellCurrency
+                    )
+                }
+                updateBuyAmount()
             }
 
             else -> Unit

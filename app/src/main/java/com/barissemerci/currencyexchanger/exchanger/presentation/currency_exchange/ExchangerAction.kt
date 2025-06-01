@@ -11,6 +11,7 @@ sealed interface ExchangerAction {
 
     data class OnChangeBuyCurrency(val currencyIndex: Int) : ExchangerAction
 
+    data object OnSwitchCurrencies : ExchangerAction
 
     data object OnDismissConversionResultDialog : ExchangerAction
 }

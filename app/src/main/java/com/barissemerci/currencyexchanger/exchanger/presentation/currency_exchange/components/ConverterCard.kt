@@ -46,7 +46,8 @@ fun ConverterCard(
     selectedSellCurrency: String,
     selectedBuyCurrency: String,
     onSellAmountChange: (String) -> Unit,
-    onDone: () -> Unit
+    onDone: () -> Unit,
+    onSwitchCurrencies : () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxWidth()
@@ -129,11 +130,11 @@ fun ConverterCard(
             }
         }
 
-        // Switch Button - Positioned to overlap both rows
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
                 .offset(y = 0.dp)
+                .clickable { onSwitchCurrencies() }
         ) {
             Surface(
                 modifier = Modifier.size(40.dp),

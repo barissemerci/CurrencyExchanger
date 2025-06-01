@@ -130,6 +130,9 @@ private fun ExchangerScreen(
             )
 
             ConverterCard(
+                onSwitchCurrencies ={
+                    onAction(ExchangerAction.OnSwitchCurrencies)
+                },
                 selectedBuyCurrency = state.selectedBuyCurrency,
                 selectedSellCurrency = state.selectedSellCurrency,
                 onBuyCurrencySelect = {
