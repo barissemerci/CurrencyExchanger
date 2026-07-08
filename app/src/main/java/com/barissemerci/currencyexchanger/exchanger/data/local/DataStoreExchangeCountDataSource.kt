@@ -16,17 +16,11 @@ class DataStoreExchangeCountDataSource(
         .map { prefs ->
             prefs[PreferenceKeys.EXCHANGE_COUNT] ?: 0
         }
-
-
+    
     override suspend fun incrementExchangeCount() {
-
         dataStore.edit { prefs ->
             val current = prefs[PreferenceKeys.EXCHANGE_COUNT] ?: 0
-
             prefs[PreferenceKeys.EXCHANGE_COUNT] = current + 1
-
         }
     }
-
-
 }

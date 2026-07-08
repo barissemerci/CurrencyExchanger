@@ -15,6 +15,5 @@ class DataStoreFirstLaunchDataSource(
         .map { it[PreferenceKeys.IS_FIRST_LAUNCH] ?: true }
     override suspend fun setFirstLaunchDone() {
         dataStore.edit { it[PreferenceKeys.IS_FIRST_LAUNCH] = false }
-
     }
 }

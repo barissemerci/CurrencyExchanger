@@ -8,5 +8,4 @@ sealed interface Route {
 
     @Serializable
     data class CurrencySelectScreen(val isSellCurrency: Boolean) : Route
-
 }

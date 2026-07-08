@@ -23,7 +23,6 @@ sealed interface UiText {
 
             if (resId != other.resId) return false
             if (!args.contentEquals(other.args)) return false
-
             return true
         }
 
@@ -32,8 +31,6 @@ sealed interface UiText {
             result = 31 * result + args.contentHashCode()
             return result
         }
-
-
     }
 
     @Composable
@@ -49,6 +46,5 @@ sealed interface UiText {
             is DynamicString -> value
             is StringResource -> context.getString(resId, *args)
         }
-
     }
 }

@@ -136,16 +136,12 @@ class ExchangerViewModel(
                             isSubmitButtonEnabled = action.amount.isNotBlank() && parsed != BigDecimal.ZERO
                         )
                     }
-
                     updateBuyAmount()
                 }
-
-
             }
 
 
             ExchangerAction.OnSubmit -> {
-                Log.d("ExchangerViewModel", "OnSubmit")
                 viewModelScope.launch {
                     val exchangeRate =
                         state.value.exchangeRates?.rates?.get(state.value.selectedBuyCurrency)
@@ -220,7 +216,6 @@ class ExchangerViewModel(
         }
     }
 
-
     private fun observeAvailableBalances() {
         viewModelScope.launch {
             availableBalanceDataSource.getAllBalances().collect { balances ->
@@ -229,6 +224,5 @@ class ExchangerViewModel(
                 }
             }
         }
-
     }
 }

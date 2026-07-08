@@ -36,7 +36,6 @@ import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.G
 import com.barissemerci.currencyexchanger.core.presentation.designsystem.theme.White
 import com.barissemerci.currencyexchanger.core.presentation.util.getDrawableIdForCurrency
 
-
 @Composable
 fun ConverterCard(
     buyAmount: String,

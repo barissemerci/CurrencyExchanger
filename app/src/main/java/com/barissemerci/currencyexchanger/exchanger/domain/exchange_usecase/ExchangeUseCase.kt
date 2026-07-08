@@ -78,6 +78,5 @@ class ExchangeCurrencyUseCase(
             }
             return Result.Error(ExchangeError.UNKNOWN)
         }
-
     }
 }

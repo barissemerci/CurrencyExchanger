@@ -27,5 +27,4 @@ val appModule = module {
     singleOf(::DataStoreFirstLaunchDataSource).bind<FirstLaunchDataSource>()
 
     singleOf(::InitializeBalanceUseCase)
-
 }

@@ -37,7 +37,6 @@ import org.koin.androidx.compose.koinViewModel
 import java.math.BigDecimal
 
 @Composable
-
 fun ExchangerScreenRoot(
     viewModel: ExchangerViewModel = koinViewModel(),
     onNavigateToCurrencyList: (Boolean) -> Unit = {}
@@ -92,7 +91,6 @@ private fun ExchangerScreen(
                 title = { Text(stringResource(R.string.currency_exchanger)) }
             )
         }
-
     ) { innerPadding ->
 
         if (state.showConversionResultDialog) {
@@ -167,9 +165,7 @@ private fun ExchangerScreen(
 private fun ExchangerScreenPreview() {
     CurrencyExchangerTheme {
         ExchangerScreen(
-            state = ExchangerState(
-
-            ),
+            state = ExchangerState(),
             onAction = {}
         )
     }
