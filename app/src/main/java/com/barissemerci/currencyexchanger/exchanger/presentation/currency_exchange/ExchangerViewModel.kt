@@ -109,6 +109,7 @@ class ExchangerViewModel(
                         selectedSellCurrency = state.value.exchangeSellCurrencyList[action.currencyIndex].currency,
                     )
                 }
+                updateBuyAmount()
             }
 
             is ExchangerAction.OnChangeBuyCurrency -> {
@@ -123,6 +124,7 @@ class ExchangerViewModel(
                         selectedBuyCurrency = state.value.exchangeBuyCurrencyList[action.currencyIndex].currency,
                     )
                 }
+                updateBuyAmount()
             }
 
             is ExchangerAction.OnChangeSellAmount -> {
